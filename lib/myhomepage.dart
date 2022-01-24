@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'api_data.dart';
 import 'crew_json.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -50,7 +52,8 @@ Future<Crew?> submitData(
       'socialHubs': socialHubs,
     },
   );
-  var data = response.body;
+  var data = response;
+  var jsonData = jsonDecode(response.body);
   // ignore: avoid_print
   // print(data + 'hello');
   print(response.body.length);
@@ -144,6 +147,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             ElevatedButton(
                 onPressed: () async {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) =>  ApiData()));
                   String basics = namecontroller.text;
 
                   Crew? data = await submitData(
@@ -164,6 +168,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     _crewdata = data!;
                     // print(data.clientPostings);
                   });
+                  
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(15),
@@ -183,3 +188,4 @@ DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
       ),
     );
+
